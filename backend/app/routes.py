@@ -1,9 +1,10 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app import db_manager
-from app.models.db_models import CompanyAccount
-from flask import jsonify, request
+from app.models.db_models import CompanyAccount, OutstandingRequest, Alert
+# from flask import jsonify, request
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity, jwt_required
 from app.jwt import authenticate_jwt
+from datetime import date
 
 bp = Blueprint("company", __name__)
 
@@ -37,6 +38,17 @@ def getOutstandingRequests():
         return OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
     else:
         return OutstandingRequest.query.filter_by(companyId = companyId).all()
+    
+@bp.route("/overdueRequests", methods=["GET"])
+def getOverdueRequests():
+    companyId = request.args.get('id')
+    isRequestor = request.args.get('isRequestor')
+    if isRequestor == 'true':
+        Alert.query(id).
+        leftjoin(OutstandingRequest, Alert.requestId == OutstandingRequest.outStandingRequest).
+        filter_by(date.today() > Alert.alertDatetime)
+        
+        
 
 @bp.route("/login", methods=["POST","GET"])
 def login():
