@@ -1,5 +1,64 @@
+import { useContext } from "react"
+import { CompanyContext } from "../contexts/company.context"
+import { Stack, Title, Blockquote, Flex, ActionIcon, Tooltip } from "@mantine/core"
+import OutstandingRequestsTable from "../components/OutstandingRequestsTable"
+import { IconCirclePlus } from "@tabler/icons-react"
+
+const sampleOutstandingRequests = [
+  {
+    id: "1",
+    companyId: "123",
+    requestorCompanyId: "",
+    carbonUnitPrice: 0,
+    carbonQuantity: 0,
+    requestReason: 0,
+    requestStatus: 0,
+    requestType: 0,
+    createdDatetime: new Date(),
+    updatedDatetime: new Date()
+  },
+  {
+    id: "2",
+    companyId: "234",
+    requestorCompanyId: "",
+    carbonUnitPrice: 0,
+    carbonQuantity: 0,
+    requestReason: 0,
+    requestStatus: 0,
+    requestType: 0,
+    createdDatetime: new Date(),
+    updatedDatetime: new Date()
+  },
+]
+
 export default function Home() {
+  const { companyInfo } = useContext(CompanyContext)
+
   return (
-    <h1>HELLO THERE</h1>
+    <>
+      <Stack>
+        <Title order={2}>Good afternoon, {companyInfo.companyName}</Title>
+        <Title order={4}>Your outstanding balances</Title>
+        <Flex gap="lg">
+          <Blockquote color="teal">
+            Carbon credits: {companyInfo.carbonBalance}
+          </Blockquote>
+          <Blockquote>
+            Cash balances: {companyInfo.cashBalance}
+          </Blockquote>
+        </Flex>
+        <Stack>
+          <Flex justify="space-between" align="center">
+            <Title order={4}>Your outstanding requests</Title>
+            <Tooltip label="Create a new request">
+              <ActionIcon color="teal" size="lg">
+                <IconCirclePlus />
+              </ActionIcon>
+            </Tooltip>
+          </Flex>
+          <OutstandingRequestsTable requests={sampleOutstandingRequests}/>
+        </Stack>
+      </Stack>
+    </>
   )
 }
