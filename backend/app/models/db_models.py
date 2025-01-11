@@ -1,5 +1,5 @@
 # Third-party imports
-from sqlalchemy import Column, Integer, String, SmallInteger, Float, DateTime
+from sqlalchemy import Column, Integer, String, SmallInteger, Float, DateTime, ForeignKey, Text
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
@@ -21,6 +21,9 @@ class CompanyAccount(Base):
     createdDatetime = Column(DateTime, nullable=False, server_default=func.now())  # Default to current timestamp
     updatedDatetime = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())  # Updates on change
 
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 class OutstandingRequest(Base):
     __tablename__ = "outstandingrequest"
     
@@ -35,6 +38,9 @@ class OutstandingRequest(Base):
     createdDatetime = Column(DateTime, nullable=False, server_default=func.now())  # Default to current timestamp
     updatedDatetime = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())  # Updates on change
 
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Alert(Base):
     __tablename__ = "requestreceived"
@@ -47,3 +53,6 @@ class Alert(Base):
     alertViewDate = Column(DateTime, nullable=True)  # Allows NULL
     createdDatetime = Column(DateTime, nullable=False, server_default=func.now())  # Default to current timestamp
     updatedDatetime = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())  # Updates on change
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

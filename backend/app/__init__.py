@@ -20,7 +20,7 @@ def create_app(config_class="config.Config"):
     # app.config["JWT_SECRET_KEY"] = "your_super_secret_key" 
     jwt = JWTManager(app)
 
-    # Register routes
-    register_routes(app)
-
+    from . import routes
+    app.register_blueprint(routes.bp)
+    
     return app
