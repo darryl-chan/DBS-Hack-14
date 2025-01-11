@@ -9,6 +9,7 @@ def authenticate_jwt():
     try:
         # Get the identity of the current user
         current_user = get_jwt_identity()
+        print(current_user)
 
         #: Perform additional checks (e.g., check if the user exists in the database)
         if not current_user:

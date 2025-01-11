@@ -14,10 +14,10 @@ def register_routes(app):
         if not username or not password:
             return {"msg": "Username and password are required."}, 400
         
-        ## add user to DB
+        ## check user in DB
 
-        access_token = create_access_token(identity=username)
-        # refresh_token = create_refresh_token(identity=username)
+        additional_claims = {"companyId": "company"}
+        access_token = create_access_token(identity=username, additional_claims=additional_claims)
 
         return jsonify(access_token = access_token) 
     
@@ -33,12 +33,15 @@ def register_routes(app):
         BLACKLIST.add(jti)
         return {"msg": "Successfully logged out"}, 200
     
-    ##test ### e,g of how to protect our routes ## to be deleted
-    # @app.route("/protected", methods=["GET", "POST"])
-    # @jwt_required()
-    # def protected():
-    #     print("entered protected")
-    #     auth_response, status_code = authenticate_jwt()
-    #     print(auth_response,status_code)
-    #     return jsonify(foo="bar")
+    #test ### e,g of how to protect our routes ## to be deleted
+    @app.route("/protected", methods=["GET", "POST"])
+    @jwt_required()
+    def protected():
+        print("entered protected")
+        claims = get_jwt()
+        companyId = claims["companyId"]
+        print("companyId: " + companyId )
+        auth_response, status_code = authenticate_jwt()
+        print(auth_response,status_code)
+        return jsonify(foo="bar")
 
