@@ -1,21 +1,19 @@
 from flask import Flask
-from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager
+from backend.jwt import init_jwt
+from backend.routes import register_routes
 
-# Initialize extensions
-bcrypt = Bcrypt()
-jwt = JWTManager()
 
-"""App factory function to create and configure the Flask application."""
-app = Flask(__name__)
-app.config.from_object(config_class)
+def create_app(config_class="config.Config"):
+    """
+    App factory to create and configure the Flask app.
+    """
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-# Initialize extensions
-bcrypt.init_app(app)
-# db.init_app(app)
-jwt.init_app(app)
+    # Initialize JWT
+    init_jwt(app)
 
-# Register blueprints
+    # Register routes
+    register_routes(app)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    return app
