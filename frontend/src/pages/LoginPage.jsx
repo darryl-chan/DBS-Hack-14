@@ -71,7 +71,7 @@ export default function LoginPage() {
               placeholder="Username"
               value={form.values.Username}
               onChange={(event) => form.setFieldValue('Username', event.currentTarget.value)}
-              error={form.errors.email && 'Invalid Username'}
+              error={form.errors.Username && 'Invalid Username'}
               radius="md"
             />
 
