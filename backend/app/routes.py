@@ -41,10 +41,8 @@ def getOutstandingRequests():
 def getOverdueRequests():
     companyId = request.args.get('id')
     isRequestor = request.args.get('isRequestor')
-    if isRequestor == 'true':
-        Alert.query(id).
-        leftjoin(OutstandingRequest, Alert.requestId == OutstandingRequest.outStandingRequest).
-        filter_by(date.today() > Alert.alertDatetime)
+    return Alert.query(id).leftjoin(OutstandingRequest, Alert.requestId == OutstandingRequest.outStandingRequest).filter_by(date.today() > Alert.alertDatetime).all()
+    
 
 @bp.route("/login", methods=["POST","GET"])
 def login():
