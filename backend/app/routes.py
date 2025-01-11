@@ -1,8 +1,7 @@
-from flask import Blueprint, jsonify
-from app import db_manager
-from app.models.db_models import CompanyAccount
-from flask import jsonify, request
-from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity, jwt_required
+from flask import Blueprint, jsonify, request
+from app.extensions import db_manager
+from app.models.db_models import CompanyAccount, OutstandingRequest
+from flask_jwt_extended import create_access_token, get_jwt, jwt_required
 from app.jwt import authenticate_jwt
 
 bp = Blueprint("company", __name__)
@@ -27,7 +26,6 @@ def get_company_details(id):
         return jsonify(company.to_dict()), 200
     else:
         return jsonify({"error": "Company not found"}), 404
-
 
 @bp.route("/outstandingRequests", methods=["GET"])
 def getOutstandingRequests():
