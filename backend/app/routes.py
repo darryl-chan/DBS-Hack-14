@@ -27,6 +27,11 @@ def get_company_details(id):
     else:
         return jsonify({"error": "Company not found"}), 404
 
+@bp.route('/receivedRequests/<id>', methods=['GET'])
+def getReceivedRequests(id):
+    alert = Alert.query.filter_by(id = id).first()
+    return jsonify(alert.to_dict()), 200
+
 @bp.route("/outstandingRequests/<id>", methods=["GET"])
 def getOutstandingRequests(id):
     isRequestor = request.args.get('isRequestor', None)
