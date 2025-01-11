@@ -31,9 +31,17 @@ def get_company_details(id):
 def getOutstandingRequests(id):
     isRequestor = request.args.get('isRequestor', None)
     if isRequestor == 'true':
-        return OutstandingRequest.query.filter_by(requestorCompanyId = id).all() # get from db where company is requestor
+        requests = OutstandingRequest.query.filter_by(requestorCompanyId = id).all()
+        res = []
+        for req in requests:
+            res.append(req.to_dict())
+        return jsonify(res), 200 # get from db where company is requestor
     else:
-        return OutstandingRequest.query.filter_by(companyId = id).all()
+        requests = OutstandingRequest.query.filter_by(companyId = id).all()
+        res = []
+        for req in requests:
+            res.append(req.to_dict())
+        return jsonify(res), 200
 
 @bp.route('/outstandingRequests', methods=['POST'])
 def createOutstandingRequests():
@@ -54,7 +62,6 @@ def createOutstandingRequests():
     db.add(alert)
     db.commit()
     return {"Status": "Success"}, 200
-
 
 
 @bp.route("/login", methods=["POST","GET"])
