@@ -1,10 +1,13 @@
 from flask import jsonify, request
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity, jwt_required
 
+from main.jwt import authenticate_jwt
+
 def register_routes(app):
 
-    @app.route("/login", methods=["POST"])
+    @app.route("/login", methods=["POST","GET"])
     def login():
+        print("entered login")
         username = request.json.get("username")
         password = request.json.get("password")
 
@@ -29,3 +32,13 @@ def register_routes(app):
         jti = get_jwt()["jti"]  # JWT ID
         BLACKLIST.add(jti)
         return {"msg": "Successfully logged out"}, 200
+    
+    ##test ### e,g of how to protect our routes ## to be deleted
+    # @app.route("/protected", methods=["GET", "POST"])
+    # @jwt_required()
+    # def protected():
+    #     print("entered protected")
+    #     auth_response, status_code = authenticate_jwt()
+    #     print(auth_response,status_code)
+    #     return jsonify(foo="bar")
+
