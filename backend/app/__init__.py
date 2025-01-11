@@ -19,7 +19,7 @@ def create_app(config_class="config.Config"):
     # Initialise DB Manager
     db_manager.init_app(app)
 
-    # Register routes
-    register_routes(app)
-
+    from . import routes
+    app.register_blueprint(routes.bp)
+    
     return app
