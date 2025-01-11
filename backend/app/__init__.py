@@ -1,6 +1,11 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from main.routes import register_routes
+from app.routes import register_routes
+# from app.jwt import init_jwt
+# from app.routes import register_routes
+from app.db.manager import DatabaseManager
+
+db_manager = DatabaseManager()
 
 
 def create_app(config_class="config.Config"):

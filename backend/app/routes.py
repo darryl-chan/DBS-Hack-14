@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity, jwt_required
 
-from main.jwt import authenticate_jwt
+from app.jwt import authenticate_jwt
 
 def register_routes(app):
 
