@@ -1,7 +1,7 @@
 from flask import Flask
-# from backend.jwt import init_jwt
-# from backend.routes import register_routes
-from backend.db.manager import DatabaseManager
+# from app.jwt import init_jwt
+# from app.routes import register_routes
+from app.db.manager import DatabaseManager
 
 db_manager = DatabaseManager()
 
