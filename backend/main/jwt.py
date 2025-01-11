@@ -10,7 +10,7 @@ def authenticate_jwt():
         # Get the identity of the current user
         current_user = get_jwt_identity()
 
-        # Optional: Perform additional checks (e.g., check if the user exists in the database)
+        #: Perform additional checks (e.g., check if the user exists in the database)
         if not current_user:
             return jsonify({"msg": "User not found"}), 404
 
