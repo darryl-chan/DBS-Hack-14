@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import CreateRequest from './components/CreateRequest';
 import EditRequest from './components/EditRequest';
 import { CompanyContextProvider } from './contexts/company.context';
+import Requests from './pages/Requests';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Layout/>}>
               <Route index element={<Home/>} />
+              <Route path='requests' element={<Requests/>} />
             </Route>
             <Route path='/login' element={<LoginPage/>} />
             <Route path='/createreq' element={<CreateRequest/>} />
