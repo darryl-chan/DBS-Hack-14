@@ -34,7 +34,7 @@ const mockdata = [
   { icon: IconSettings, label: 'Settings' },
 ];
 
-export function NavbarMinimalColored() {
+export function Navbar() {
   const [active, setActive] = useState(2);
 
   const links = mockdata.map((link, index) => (
