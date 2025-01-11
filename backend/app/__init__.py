@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS, cross_origin
 from app.extensions import db_manager
 
 def create_app(config_class="config.Config"):
@@ -7,6 +8,7 @@ def create_app(config_class="config.Config"):
     App factory to create and configure the Flask app.
     """
     app = Flask(__name__)
+    cors = CORS(app)
     app.config.from_object(config_class)
     
     # Initialize JWT
