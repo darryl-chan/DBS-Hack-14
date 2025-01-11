@@ -1,10 +1,9 @@
 # Third-party imports
 from sqlalchemy import Column, Integer, String, SmallInteger, Float, DateTime, ForeignKey, Text
 from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
 
 # App imports
-from app import db_manager
+from app.extensions import db_manager
 
 
 Base = db_manager.base
