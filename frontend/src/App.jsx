@@ -4,6 +4,7 @@ import Layout from './Layout'
 import Home from './pages/Home';
 import { Routes, Route, BrowserRouter } from 'react-router';
 import LoginPage from './components/LoginPage';
+import CreateRequest from './components/CreateRequest';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route index element={<Home/>} />
           </Route>
           <Route path='/login' element={<LoginPage/>} />
+          <Route path='/createreq' element={<CreateRequest/>} />
         </Routes>
       </BrowserRouter>
      
