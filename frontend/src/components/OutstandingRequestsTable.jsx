@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Table, ActionIcon, Flex, Tooltip, Popover, Button, Modal } from "@mantine/core";
 import { IconTrash, IconEdit } from "@tabler/icons-react";
 import { truncateString } from "../utils/stringFormatting";
-
+import EditRequest from "./EditRequest";
 const COL_MAX_WIDTH = 30;
 
 const Row = ({
@@ -71,10 +71,24 @@ const Row = ({
             centered
           >
             <div>
+
+         
+
               {/* Modal Content */}
+
+              <EditRequest>
+       
               <p>Edit the details of the request here:</p>
-              <p>Company ID: {companyId}</p>
-              <p>Request Type: {requestType}</p>
+              <p>Request Date: </p>
+              <p>Company Name: </p>
+              <p>Carbon Price SGD/Tonnes:</p>
+              <p>Carbon Quantity: </p>
+              <p>Requesting Reason: </p>
+              <p>Request Type: </p>  
+
+              </EditRequest>
+
+  
               <Button
                 onClick={() => {
                   console.log(`Edit request ${id}`);
