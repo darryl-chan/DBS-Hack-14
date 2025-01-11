@@ -17,7 +17,7 @@ def before_request():
 def shutdown_session(response):
     db.remove()
 
-@bp.route("/companyAccount/<id>", methods=["GET"])
+@bp.route("/companyAccounts/<id>", methods=["GET"])
 def get_company_details(id):
     """Get Company details"""
     company = CompanyAccount.query.filter_by(companyId=id).first()
@@ -27,14 +27,35 @@ def get_company_details(id):
     else:
         return jsonify({"error": "Company not found"}), 404
 
-@bp.route("/outstandingRequests", methods=["GET"])
-def getOutstandingRequests():
-    companyId = request.args.get('id')
-    isRequestor = request.args.get('isRequestor')
+@bp.route("/outstandingRequests/<id>", methods=["GET"])
+def getOutstandingRequests(id):
+    isRequestor = request.args.get('isRequestor', None)
     if isRequestor == 'true':
-        return OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
+        return OutstandingRequest.query.filter_by(requestorCompanyId = id).all() # get from db where company is requestor
     else:
-        return OutstandingRequest.query.filter_by(companyId = companyId).all()
+        return OutstandingRequest.query.filter_by(companyId = id).all()
+
+@bp.route('/outstandingRequests', methods=['POST'])
+def createOutstandingRequests():
+    requestorCompanyId = request.args.get('requestorCompanyId')
+    companyId = request.args.get('companyId')
+    carbonUnitPrice = request.args.get('carbonUnitPrice')
+    carbonQuantity = request.args.get('carbonQuantity')
+    requestReason = request.args.get('requestReason')
+    requestType = request.args.get('requestType')
+    requestStatus = 'PENDING'
+    requestCreatedDatetime = datetime.now()
+    requestUpdatedDatetime = datetime.now()
+    # OutstandingRequest.insert(requestorCompanyId, companyId, carbonUnitPrice, carbonQuantity, requestReason, requestStatus, requestType, requestCreatedDatetime, requestUpdatedDatetime)
+    request = OutstandingRequest.from_dict(request.args)
+    # Alert.insert(requestorCompanyId, companyId, requestType, requestCreatedDatetime, requestUpdatedDatetime)
+    alert = Alert.from_dict(request.args)
+    db.add(request)
+    db.add(alert)
+    db.commit()
+    return {"Status": "Success"}, 200
+
+
 
 @bp.route("/login", methods=["POST","GET"])
 def login():
