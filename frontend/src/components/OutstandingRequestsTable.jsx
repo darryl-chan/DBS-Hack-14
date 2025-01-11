@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Table, ActionIcon, Flex, Tooltip, Popover, Button } from "@mantine/core";
+import { Table, ActionIcon, Flex, Tooltip, Popover, Button, Modal } from "@mantine/core";
 import { IconTrash, IconEdit } from "@tabler/icons-react";
-import { truncateString } from '../utils/stringFormatting'
+import { truncateString } from "../utils/stringFormatting";
 
-const COL_MAX_WIDTH=30;
+const COL_MAX_WIDTH = 30;
 
 const Row = ({
   id,
@@ -12,9 +12,10 @@ const Row = ({
   carbonUnitPrice,
   carbonQuantity,
   requestReason,
-  requestType
+  requestType,
 }) => {
-  const [opened, setOpened] = useState(false);
+  const [deletePopoverOpened, setDeletePopoverOpened] = useState(false); // For Delete Popover
+  const [editModalOpened, setEditModalOpened] = useState(false); // For Edit Modal
 
   return (
     <Table.Tr key={id}>
@@ -26,31 +27,73 @@ const Row = ({
       <Table.Td>{requestType}</Table.Td>
       <Table.Td>
         <Flex gap={4}>
+          {/* Edit Button */}
           <Tooltip label="Edit Request">
-            <ActionIcon variant="filled">
-              <IconEdit/>
+            <ActionIcon
+              variant="filled"
+              onClick={() => setEditModalOpened(true)} // Open Edit Modal
+            >
+              <IconEdit />
             </ActionIcon>
           </Tooltip>
-          <Popover opened={opened} onChange={setOpened}>
+
+          {/* Delete Button */}
+          <Popover
+            opened={deletePopoverOpened}
+            onChange={setDeletePopoverOpened}
+          >
             <Popover.Target>
-              <ActionIcon color="red" variant="filled" onClick={() => setOpened((o) => !o)}>
-                <IconTrash/>
+              <ActionIcon
+                color="red"
+                variant="filled"
+                onClick={() => setDeletePopoverOpened((o) => !o)}
+              >
+                <IconTrash />
               </ActionIcon>
             </Popover.Target>
 
             <Popover.Dropdown style={{ padding: 0 }}>
-              <Button variant="subtle" color="red">Confirm delete?</Button>
+              <Button
+                variant="subtle"
+                color="red"
+                onClick={() => console.log(`Delete request ${id}`)}
+              >
+                Confirm delete?
+              </Button>
             </Popover.Dropdown>
           </Popover>
+
+          {/* Edit Modal */}
+          <Modal
+            opened={editModalOpened}
+            onClose={() => setEditModalOpened(false)} // Close Modal
+            title="Edit Request"
+            centered
+          >
+            <div>
+              {/* Modal Content */}
+              <p>Edit the details of the request here:</p>
+              <p>Company ID: {companyId}</p>
+              <p>Request Type: {requestType}</p>
+              <Button
+                onClick={() => {
+                  console.log(`Edit request ${id}`);
+                  setEditModalOpened(false); // Close modal after action
+                }}
+              >
+                Save Changes
+              </Button>
+            </div>
+          </Modal>
         </Flex>
       </Table.Td>
     </Table.Tr>
-  )
-}
+  );
+};
 
-// made by YOUR company
+// Main Component
 export default function OutstandingRequestsTable({ requests }) {
-  const rows = requests.map((r) => <Row {...r}/>)
+  const rows = requests.map((r) => <Row {...r} />);
 
   return (
     <Table>
@@ -67,5 +110,6 @@ export default function OutstandingRequestsTable({ requests }) {
       </Table.Thead>
       <Table.Tbody>{rows}</Table.Tbody>
     </Table>
-  )
+  );
 }
+
