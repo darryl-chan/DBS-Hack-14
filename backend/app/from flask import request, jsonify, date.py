@@ -6,19 +6,9 @@ def getOutstandingRequests():
     companyId = request.args.get('id')
     isRequestor = request.args.get('isRequestor')
     if isRequestor == 'true':
-        requests = OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
-        res = []
-        for request in requests:
-            r = request.to_dict()
-            res.append(r)
-        return res
+        return OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
     else:
-        requests = OutstandingRequest.query.filter_by(companyId = companyId).all() # get from db where company is requestee
-        res = []
-        for request in requests:
-            r = request.to_dict()
-            res.append(r)
-        return res
+        return OutstandingRequest.query.filter_by(companyId = companyId).all() # get from db where company is requestee
 
 @app.route('/outstandingRequests', methods=['POST'])
 def createOutstandingRequests():
@@ -73,7 +63,8 @@ def deleteOutstandingRequests(id):
     OutstandingRequest.delete(id)
     return ""
 
-@bp.route('/receivedRequests/<id>', methods=['GET'])
+@app.route('/receivedRequests/<id>', methods=['GET'])
 def getReceivedRequests(id):
-    alert = Alert.query.filter_by(id = id).first()
-    return jsonify(alert.to_dict()), 200
+    return Alert.query.filter_by(id = id).first()
+
+

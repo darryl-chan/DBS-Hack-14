@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request
 from app.extensions import db_manager
-from app.models.db_models import CompanyAccount, OutstandingRequest
+from app.models.db_models import CompanyAccount, OutstandingRequest, Alert
 from flask_jwt_extended import create_access_token, get_jwt, jwt_required
 from app.jwt import authenticate_jwt
+from datetime import date
 
 bp = Blueprint("company", __name__)
 
@@ -68,6 +69,13 @@ def createOutstandingRequests():
     db.commit()
     return {"Status": "Success"}, 200
 
+
+@bp.route("/overdueRequests", methods=["GET"])
+def getOverdueRequests():
+    companyId = request.args.get('id')
+    isRequestor = request.args.get('isRequestor')
+    return Alert.query(id).leftjoin(OutstandingRequest, Alert.requestId == OutstandingRequest.outStandingRequest).filter_by(date.today() > Alert.alertDatetime).all()
+    
 
 @bp.route("/login", methods=["POST","GET"])
 def login():
