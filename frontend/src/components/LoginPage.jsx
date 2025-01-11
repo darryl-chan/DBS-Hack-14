@@ -51,7 +51,7 @@ export default function LoginPage() {
           Welcome to Mantine, {type} with
         </Text>
 
-        <Divider label="Or continue with email" labelPosition="center" my="lg" />
+        <Divider />
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
@@ -67,11 +67,11 @@ export default function LoginPage() {
 
             <TextInput
               required
-              label="Email"
-              placeholder="Enter your email"
-              value={form.values.email}
-              onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-              error={form.errors.email && 'Invalid email'}
+              label="Username"
+              placeholder="Username"
+              value={form.values.Username}
+              onChange={(event) => form.setFieldValue('Username', event.currentTarget.value)}
+              error={form.errors.email && 'Invalid Username'}
               radius="md"
             />
 
