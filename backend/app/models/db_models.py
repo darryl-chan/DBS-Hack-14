@@ -23,6 +23,9 @@ class CompanyAccount(Base):
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+    def from_dict(self, kwargs):
+        return CompanyAccount(**kwargs)
+
 class OutstandingRequest(Base):
     __tablename__ = "outstandingrequest"
     
@@ -40,6 +43,9 @@ class OutstandingRequest(Base):
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+    def from_dict(self, kwargs):
+        return OutstandingRequest(**kwargs)
+
 
 class Alert(Base):
     __tablename__ = "requestreceived"
@@ -55,3 +61,6 @@ class Alert(Base):
 
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def from_dict(self, kwargs):
+        return Alert(**kwargs)
