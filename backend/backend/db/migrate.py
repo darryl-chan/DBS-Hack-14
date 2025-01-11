@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy import text
 import os
-from ...config import Config
+from config import Config
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
