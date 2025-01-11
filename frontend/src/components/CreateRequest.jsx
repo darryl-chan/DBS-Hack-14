@@ -19,7 +19,7 @@ const CreateRequest = () => {
     e.preventDefault();
     console.log('Form Data:', formData);
     alert('Request submitted successfully!');
-    // Here you can send the data to an API or handle it as needed
+    // send the data to an API or handle it as needed
   };
 
   return (
