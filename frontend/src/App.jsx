@@ -9,7 +9,7 @@ import EditRequest from './components/EditRequest';
 
 function App() {
   return (
-    <MantineProvider>s
+    <MantineProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Layout/>}>
