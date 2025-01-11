@@ -24,3 +24,13 @@ def get_company_details(id):
         return jsonify(company.to_dict()), 200
     else:
         return jsonify({"error": "Company not found"}), 404
+
+
+@bp.route("/outstandingRequests", methods=["GET"])
+def getOutstandingRequests():
+    companyId = request.args.get('id')
+    isRequestor = request.args.get('isRequestor')
+    if isRequestor == 'true':
+        return OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
+    else:
+        return OutstandingRequest.query.filter_by(companyId = companyId).all()
