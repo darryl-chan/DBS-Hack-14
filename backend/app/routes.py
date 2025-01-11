@@ -18,7 +18,7 @@ def before_request():
 def shutdown_session(response):
     db.remove()
 
-@bp.route("/companyAccount/<id>", methods=["GET"])
+@bp.route("/companyAccounts/<id>", methods=["GET"])
 def get_company_details(id):
     """Get Company details"""
     company = CompanyAccount.query.filter_by(companyId=id).first()
@@ -28,14 +28,47 @@ def get_company_details(id):
     else:
         return jsonify({"error": "Company not found"}), 404
 
-@bp.route("/outstandingRequests", methods=["GET"])
-def getOutstandingRequests():
-    companyId = request.args.get('id')
-    isRequestor = request.args.get('isRequestor')
+@bp.route('/receivedRequests/<id>', methods=['GET'])
+def getReceivedRequests(id):
+    alert = Alert.query.filter_by(id = id).first()
+    return jsonify(alert.to_dict()), 200
+
+@bp.route("/outstandingRequests/<id>", methods=["GET"])
+def getOutstandingRequests(id):
+    isRequestor = request.args.get('isRequestor', None)
     if isRequestor == 'true':
-        return OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
+        requests = OutstandingRequest.query.filter_by(requestorCompanyId = id).all()
+        res = []
+        for req in requests:
+            res.append(req.to_dict())
+        return jsonify(res), 200 # get from db where company is requestor
     else:
-        return OutstandingRequest.query.filter_by(companyId = companyId).all()
+        requests = OutstandingRequest.query.filter_by(companyId = id).all()
+        res = []
+        for req in requests:
+            res.append(req.to_dict())
+        return jsonify(res), 200
+
+@bp.route('/outstandingRequests', methods=['POST'])
+def createOutstandingRequests():
+    requestorCompanyId = request.args.get('requestorCompanyId')
+    companyId = request.args.get('companyId')
+    carbonUnitPrice = request.args.get('carbonUnitPrice')
+    carbonQuantity = request.args.get('carbonQuantity')
+    requestReason = request.args.get('requestReason')
+    requestType = request.args.get('requestType')
+    requestStatus = 'PENDING'
+    requestCreatedDatetime = datetime.now()
+    requestUpdatedDatetime = datetime.now()
+    # OutstandingRequest.insert(requestorCompanyId, companyId, carbonUnitPrice, carbonQuantity, requestReason, requestStatus, requestType, requestCreatedDatetime, requestUpdatedDatetime)
+    request = OutstandingRequest.from_dict(request.args)
+    # Alert.insert(requestorCompanyId, companyId, requestType, requestCreatedDatetime, requestUpdatedDatetime)
+    alert = Alert.from_dict(request.args)
+    db.add(request)
+    db.add(alert)
+    db.commit()
+    return {"Status": "Success"}, 200
+
 
 @bp.route("/overdueRequests", methods=["GET"])
 def getOverdueRequests():
