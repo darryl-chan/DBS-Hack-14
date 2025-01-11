@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   IconCalendarStats,
   IconDeviceDesktopAnalytics,
@@ -13,8 +12,9 @@ import {
 import { Center, Stack, Tooltip, UnstyledButton } from '@mantine/core';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Navbar.module.css';
+import { useLocation, useNavigate } from 'react-router'
 
-function NavbarLink({ icon: Icon, label, active, onClick }) {
+function NavbarLink({ icon: Icon, label, active, onClick}) {
   return (
     <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
       <UnstyledButton onClick={onClick} className={classes.link} data-active={active || undefined}>
@@ -25,24 +25,26 @@ function NavbarLink({ icon: Icon, label, active, onClick }) {
 }
 
 const mockdata = [
-  { icon: IconHome2, label: 'Home' },
-  { icon: IconGauge, label: 'Dashboard' },
-  { icon: IconDeviceDesktopAnalytics, label: 'Analytics' },
-  { icon: IconCalendarStats, label: 'Releases' },
-  { icon: IconUser, label: 'Account' },
-  { icon: IconFingerprint, label: 'Security' },
-  { icon: IconSettings, label: 'Settings' },
+  { icon: IconHome2, label: 'Home', path: '/' },
+  { icon: IconDeviceDesktopAnalytics, label: 'Requests Received', path: '/received' },
+  // { icon: IconDeviceDesktopAnalytics, label: 'Analytics' },
+  // { icon: IconCalendarStats, label: 'Releases' },
+  // { icon: IconUser, label: 'Account' },
+  // { icon: IconFingerprint, label: 'Security' },
+  // { icon: IconSettings, label: 'Settings' },
 ];
 
 export function Navbar() {
-  const [active, setActive] = useState(2);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const links = mockdata.map((link, index) => (
+
+  const links = mockdata.map((link) => (
     <NavbarLink
       {...link}
       key={link.label}
-      active={index === active}
-      onClick={() => setActive(index)}
+      active={link.path === location?.pathname}
+      onClick={() => navigate(link.path)}
     />
   ));
 
@@ -59,7 +61,6 @@ export function Navbar() {
       </div>
 
       <Stack justify="center" gap={0}>
-        <NavbarLink icon={IconSwitchHorizontal} label="Change account" />
         <NavbarLink icon={IconLogout} label="Logout" />
       </Stack>
     </nav>

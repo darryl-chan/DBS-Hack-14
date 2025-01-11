@@ -34,3 +34,40 @@ def getOutstandingRequests():
         return OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
     else:
         return OutstandingRequest.query.filter_by(companyId = companyId).all()
+from flask import jsonify, request
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity, jwt_required
+
+from app.jwt import authenticate_jwt
+
+
+
+@bp.route("/login", methods=["POST","GET"])
+def login():
+    print("entered login")
+    username = request.json.get("username")
+    password = request.json.get("password")
+
+    if not username or not password:
+        return {"msg": "Username and password are required."}, 400
+    
+    ## check user in DB
+
+    additional_claims = {"companyId": "company"}
+    access_token = create_access_token(identity=username, additional_claims=additional_claims)
+
+    return jsonify(access_token = access_token) 
+
+#test ### e,g of how to protect our routes ## to be deleted
+@bp.route("/protected", methods=["GET", "POST"])
+@jwt_required()
+def protected():
+    print("entered protected")
+    claims = get_jwt()
+    companyId = claims["companyId"]
+    print("companyId: " + companyId )
+    auth_response, status_code = authenticate_jwt()
+    print(auth_response,status_code)
+    return jsonify(foo="bar")
+
+    
+
