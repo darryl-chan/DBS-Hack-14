@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Table, ActionIcon, Flex, Tooltip, Popover, Button } from "@mantine/core";
-import { IconTrash, IconEdit } from "@tabler/icons-react";
+import { Table } from "@mantine/core";
 import { truncateString } from '../utils/stringFormatting'
 
 const COL_MAX_WIDTH=30;
@@ -12,10 +10,9 @@ const Row = ({
   carbonUnitPrice,
   carbonQuantity,
   requestReason,
-  requestType
+  requestType,
+  actionsBuilder
 }) => {
-  const [opened, setOpened] = useState(false);
-
   return (
     <Table.Tr key={id}>
       <Table.Td>{truncateString(createdDatetime.toString(), COL_MAX_WIDTH)}</Table.Td>
@@ -25,32 +22,15 @@ const Row = ({
       <Table.Td>{requestReason}</Table.Td>
       <Table.Td>{requestType}</Table.Td>
       <Table.Td>
-        <Flex gap={4}>
-          <Tooltip label="Edit Request">
-            <ActionIcon variant="filled">
-              <IconEdit/>
-            </ActionIcon>
-          </Tooltip>
-          <Popover opened={opened} onChange={setOpened}>
-            <Popover.Target>
-              <ActionIcon color="red" variant="filled" onClick={() => setOpened((o) => !o)}>
-                <IconTrash/>
-              </ActionIcon>
-            </Popover.Target>
-
-            <Popover.Dropdown style={{ padding: 0 }}>
-              <Button variant="subtle" color="red">Confirm delete?</Button>
-            </Popover.Dropdown>
-          </Popover>
-        </Flex>
+        {actionsBuilder(id)}
       </Table.Td>
     </Table.Tr>
   )
 }
 
 // made by YOUR company
-export default function OutstandingRequestsTable({ requests }) {
-  const rows = requests.map((r) => <Row {...r}/>)
+export default function RequestsTable({ requests, actionsBuilder }) {
+  const rows = requests.map((r) => <Row {...r} key={r.id} actionsBuilder={actionsBuilder}/>)
 
   return (
     <Table>

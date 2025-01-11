@@ -1,8 +1,8 @@
 import { useContext } from "react"
 import { CompanyContext } from "../contexts/company.context"
-import { Stack, Title, Blockquote, Flex, ActionIcon, Tooltip } from "@mantine/core"
-import OutstandingRequestsTable from "../components/OutstandingRequestsTable"
-import { IconCirclePlus } from "@tabler/icons-react"
+import { Stack, Title, Blockquote, Flex, ActionIcon, Tooltip, Popover, Button } from "@mantine/core"
+import RequestsTable from "../components/RequestsTable"
+import { IconCirclePlus, IconTrash, IconEdit } from "@tabler/icons-react"
 
 const sampleOutstandingRequests = [
   {
@@ -56,7 +56,26 @@ export default function Home() {
               </ActionIcon>
             </Tooltip>
           </Flex>
-          <OutstandingRequestsTable requests={sampleOutstandingRequests}/>
+          <RequestsTable requests={sampleOutstandingRequests} actionsBuilder={(id) => (
+            <Flex gap={4}>
+              <Tooltip label="Edit Request">
+                <ActionIcon variant="filled">
+                  <IconEdit/>
+                </ActionIcon>
+              </Tooltip>
+              <Popover>
+                <Popover.Target>
+                  <ActionIcon color="red" variant="filled">
+                    <IconTrash/>
+                  </ActionIcon>
+                </Popover.Target>
+    
+                <Popover.Dropdown style={{ padding: 0 }}>
+                  <Button variant="subtle" color="red">Confirm delete?</Button>
+                </Popover.Dropdown>
+              </Popover>
+            </Flex>
+          )}/>
         </Stack>
       </Stack>
     </>
