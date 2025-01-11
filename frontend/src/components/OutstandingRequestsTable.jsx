@@ -93,7 +93,7 @@ const Row = ({
 
 // Main Component
 export default function OutstandingRequestsTable({ requests }) {
-  const rows = requests.map((r) => <Row {...r} />);
+  const rows = requests.map((r) => <Row {...r} key={r.id}/>)
 
   return (
     <Table>

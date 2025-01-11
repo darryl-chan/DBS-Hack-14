@@ -26,7 +26,7 @@ function NavbarLink({ icon: Icon, label, active, onClick}) {
 
 const mockdata = [
   { icon: IconHome2, label: 'Home', path: '/' },
-  { icon: IconDeviceDesktopAnalytics, label: 'Requests Received', path: '/received' },
+  { icon: IconDeviceDesktopAnalytics, label: 'Requests Received', path: '/requests' },
   // { icon: IconDeviceDesktopAnalytics, label: 'Analytics' },
   // { icon: IconCalendarStats, label: 'Releases' },
   // { icon: IconUser, label: 'Account' },
