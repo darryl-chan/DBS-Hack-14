@@ -1,6 +1,9 @@
 from flask import Blueprint, jsonify
 from app import db_manager
 from app.models.db_models import CompanyAccount
+from flask import jsonify, request
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity, jwt_required
+from app.jwt import authenticate_jwt
 
 bp = Blueprint("company", __name__)
 
@@ -34,12 +37,6 @@ def getOutstandingRequests():
         return OutstandingRequest.query.filter_by(requestCompanyId = companyId).all() # get from db where company is requestor
     else:
         return OutstandingRequest.query.filter_by(companyId = companyId).all()
-from flask import jsonify, request
-from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity, jwt_required
-
-from app.jwt import authenticate_jwt
-
-
 
 @bp.route("/login", methods=["POST","GET"])
 def login():
